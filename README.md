@@ -3,7 +3,7 @@
 ### Program usage
 This program is used to send morse code information between one micro:bit to another. 
 The sender will write one character in morse code at the time, and then press a button to send it to the other device. The receiving device will be responsible to understand the message received and decode it into an ASCII letter. To perform this operation the ASCII characters are saved into a tree, so that the decoding of the message will be easier.
-![Morse Tree](Images/MorseTree.png "Morse code binary tree")
+![Morse Tree](Images/morseTree.png "Morse code binary tree")
 
 ## Building Instructions
 
