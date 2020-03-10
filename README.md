@@ -2,7 +2,7 @@
 
 ### Program usage
 This program is used to send morse code information between one micro:bit to another. 
-The sender will write one character in morse code at the time, and then press a button to send it to the other device. The receiving device will be responsible to understand the message received and decode it into an ASCII letter. To perform this operation the ASCII characters are saved into a tree, so that the decoding of the message will be easier.
+The sender will store one ASCII character, made up of morse code symbols, at a time, and a button is pressed it will send it to the other device. The receiving device will be responsible to understand the message received (through a digital signal) and decode it into an ASCII letter. To perform this operation the ASCII characters are saved into a tree, so that the decoding of the message will be easier.
 ![Morse Tree](Images/morseTree.png "Morse code binary tree")
 
 ## Building Instructions
@@ -30,7 +30,7 @@ The sender will write one character in morse code at the time, and then press a 
     * Copy this file to `user/MICROBIT`
 ---
 ### Hardware instructions
-To connect the 2 Microbits we need 2 alligator clips. For the data transmission the Micro:Bits use digital signal, which means that both Microbits need to share the same GROUND and PIN in order to establish communication. In the code Pin number 0 is utilized, but any Pin is fine to use given that we change the Pin number in the program to the pin number of your choice. To start the program needs to be compiled for the receiver with the Boolean variable named "receiver" set to true and then, for the sender, the value of the variable "receiver" to false.
+Connect two Micro:Bits via wire. For the data transmission the Micro:Bits use a digital signal, which means that both need to share the GROUND and PIN in order to establish communication. To start, the program needs to be compiled; for the receiver with the Boolean variable named "receiver" set to true, and then, for the sender, the value of the variable "receiver" set to false.
 ```c++
 //Sender if false/ receiver if true
 bool receiver = false;
@@ -38,9 +38,9 @@ bool receiver = false;
 ---
 
 ### Transmission
- First The Microbit detects if a long or short click occurs, to choose between a dot or dash symbol. The dot symbol will indicate to the receiver to travers the left edge of a node in the tree, oppositaly, if the dash symbol is detected, the receiver will know to traverse the right edge of a node in the tree. 
+ The Micro:bits will detect if a long or short click occurs, to choose respectevly between a dot or dash symbol. The dot symbol will dictate to the receiver to travers the left edge of a node in the Morse tree, oppositaly, if the dash symbol is detected, the receiver will know to traverse the right edge of a node in the tree. 
 
- For convenience button B is used to trigger the transmission of the Morse code that has been recorded in a buffer up to that point. When an event on button B occurs the message stored on the buffer is encrypted, after which, a parity bit is added to the data packet, and finally the message is sent to the receiver where the message will be decrypted and decoded.
+ For convenience, button B is used to trigger the transmission of the Morse code, which until that point, has been stored in a buffer. When an event on button B occurs, the message stored on the buffer is encrypted, a parity bit is added to the data packet, before finally being sent to the receiver where it will be decrypted and decoded.
 
 ### Data packet
 The message is stored in a 9 bit data packet where the first **3 bits represent the length of the message**, followed by **a parity bit** that will be used to check the integrity of the message upon arrival and **the last 5 bits represent the actual message**.
@@ -85,15 +85,15 @@ The message is stored in a 9 bit data packet where the first **3 bits represent 
     </tbody>
 </table>
 
-We chose this approach knowing that our tree has 5 layers so anything more than 5 inputs would 
-be an error.
+We chose this approach knowing that any charachter has a maximum of 5 inputs, so a bigger data packet will never be needed.
+After the data packet is received and decrypted, ones and zeros of the message section of the packet will correspond respectively to '.' and '-' symbols of the morse code.
 
 ---
 #### Program flow:
 #####  Write a Dot
-When button A is pressed for short duration(approx. anything less than 1 sec) and released it triggers an event whose pulse is calculated by the Difference of the total sleep minus the sleep time for the dot. 
+When "button A" is pressed for a short duration(approx. anything less than 1 sec) and released it triggers an event whose pulse is calculated by the Difference of the total sleep minus the sleep time for the dot. 
 #####  Write a Dash
-When button A is pressed for long duration(approx. anything more than 1 sec) and released it triggers an event whose pulse is  calculated by the Difference of the total sleep minus the sleep time for the dash.
+When "button A" is pressed for long duration(approx. anything more than 1 sec) and released it triggers an event whose pulse is  calculated by the Difference of the total sleep minus the sleep time for the dash.
 ##### Encryption
 The encryption is performed using **XOR**. The message section of the packet, before 		being sent, is encrypted by executing a **bitwise XOR** operation **between the message** section of the packet **and a key**. The packet header is left decrypted for the receiver to “understand” it.	
 ##### Parity Checksum
