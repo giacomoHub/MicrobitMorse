@@ -106,10 +106,10 @@ After gathering and decoding the header information from the packet, the message
 To change mode (from sender to receiver), the sender must simply press the button B when the buffer is empty. This will send an empty message to the receiver that will know to set it's state to sender.
 
 ## **Final state machine showing the workings of the sender:**
-![SenderFSM](Images/Sender FSM.jpg "Morse code binary tree")
+![SenderFSM](Images/Sender_FSM.jpg "Morse code binary tree")
 
 ## **Final state machine showing the workings of the receiver:**
-![ReceiverFSM](Images/Reciever FSM.jpg "Morse code binary tree")
+![ReceiverFSM](Images/Reciever_FSM.jpg "Morse code binary tree")
 ---
 
 NOTE:
